@@ -1,2 +1,2 @@
 # ice
-Ice - a social media web app
+Ice - a social media app
