@@ -43,7 +43,7 @@ class about extends Component {
             planet ;)
             <br />
             <br />
-            PS: Members are called Icelanders, while posts are called Screams.
+            PS: Members are called Icers, while posts are called Screams.
             Rest, is presented and yours to interpret.
           </Typography>
           <hr style={{ width: '55%' }} className={classes.visibleSeparator} />

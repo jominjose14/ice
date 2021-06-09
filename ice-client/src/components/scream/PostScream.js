@@ -1,42 +1,42 @@
-import React, { Component, Fragment } from 'react';
-import PropTypes from 'prop-types';
-import styling from '../../util/styling';
-import MyButton from '../../util/MyButton';
+import React, { Component, Fragment } from "react";
+import PropTypes from "prop-types";
+import styling from "../../util/styling";
+import MyButton from "../../util/MyButton";
 //Mui Stuff
-import withStyles from '@material-ui/core/styles/withStyles';
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
-import Dialog from '@material-ui/core/Dialog';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import AddIcon from '@material-ui/icons/Add';
-import CloseIcon from '@material-ui/icons/Close';
+import withStyles from "@material-ui/core/styles/withStyles";
+import Button from "@material-ui/core/Button";
+import TextField from "@material-ui/core/TextField";
+import Dialog from "@material-ui/core/Dialog";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import AddIcon from "@material-ui/icons/Add";
+import CloseIcon from "@material-ui/icons/Close";
 //Redux Stuff
-import { connect } from 'react-redux';
-import { postScream, clearErrors } from '../../redux/actions/dataActions';
+import { connect } from "react-redux";
+import { postScream, clearErrors } from "../../redux/actions/dataActions";
 
 const styles = {
   ...styling,
   submitButton: {
-    position: 'relative',
-    float: 'right',
+    position: "relative",
+    float: "right",
     marginTop: 10,
   },
   progressSpinner: {
-    position: 'absolute',
+    position: "absolute",
   },
   closeButton: {
-    position: 'absolute',
-    left: '91%',
-    top: '1%',
+    position: "absolute",
+    left: "91%",
+    top: "1%",
   },
 };
 
 class PostScream extends Component {
   state = {
     open: false,
-    body: '',
+    body: "",
     errors: {},
   };
 
@@ -47,7 +47,7 @@ class PostScream extends Component {
       });
     }
     if (!nextProps.UI.errors && !nextProps.UI.loading) {
-      this.setState({ body: '', open: false, errors: {} });
+      this.setState({ body: "", open: false, errors: {} });
     }
   }
 
@@ -104,7 +104,7 @@ class PostScream extends Component {
                 label="SCREAM!"
                 multiline
                 rows="2"
-                placeholder="Scream at your fellow Icelanders"
+                placeholder="Scream at your fellow Icers"
                 errors={errors.body ? true : false}
                 helperText={errors.body}
                 className={classes.textField}
