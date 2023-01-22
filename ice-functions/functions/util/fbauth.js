@@ -1,6 +1,6 @@
-const { admin, db } = require('./admin');
+import { admin, db } from './admin.js';
 
-module.exports = (req, res, next) => {
+export default (req, res, next) => {
     let idToken;
     if(req.headers.authorization && req.headers.authorization.startsWith('Bearer ')) {
         idToken = req.headers.authorization.split('Bearer ')[1];
@@ -9,7 +9,7 @@ module.exports = (req, res, next) => {
         return res.status(403).json({ error: "Unauthorised" });
     }
 
-    admin.auth().verifyIdToken(idToken)
+    admin.getAuth().verifyIdToken(idToken)
     .then(decodedToken => {
         req.user = decodedToken;
         return db.collection("users").where('userId', '==', req.user.uid).limit(1).get();

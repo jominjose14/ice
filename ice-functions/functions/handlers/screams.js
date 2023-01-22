@@ -1,11 +1,11 @@
-const { db } = require('../util/admin');
+import { db } from '../util/admin.js';
 
 const isEmpty = (string) => {
   if (string.trim() === '') return true;
   else return false;
 };
 
-exports.getAllScreams = (req, res) => {
+export function getAllScreams(req, res) {
   db.collection('screams')
     .orderBy('createdAt', 'desc')
     .get()
@@ -25,9 +25,9 @@ exports.getAllScreams = (req, res) => {
       return res.json(screams);
     })
     .catch((err) => console.error(err));
-};
+}
 
-exports.postOneScream = (req, res) => {
+export function postOneScream(req, res) {
   if (isEmpty(req.body.body))
     return res.status(400).json({ body: 'Body must not be empty' });
 
@@ -51,10 +51,10 @@ exports.postOneScream = (req, res) => {
       res.status(500).json({ error: 'Something went wrong...' });
       console.error(err);
     });
-};
+}
 
 //Fetch one scream
-exports.getScream = (req, res) => {
+export function getScream(req, res) {
   let screamData = {};
   db.doc(`/screams/${req.params.screamId}`)
     .get()
@@ -81,10 +81,10 @@ exports.getScream = (req, res) => {
       console.error(err);
       return res.status(500).json({ error: err.code });
     });
-};
+}
 
 //Comment on a scream
-exports.commentOnScream = (req, res) => {
+export function commentOnScream(req, res) {
   if (req.body.body.trim() === '')
     return res.status(400).json({ comment: 'Must not be empty' });
 
@@ -115,10 +115,10 @@ exports.commentOnScream = (req, res) => {
       console.error(err);
       return res.status(500).json({ error: 'Something went wrong' });
     });
-};
+}
 
 //Like a scream
-exports.likeScream = (req, res) => {
+export function likeScream(req, res) {
   const likeDocument = db
     .collection('likes')
     .where('userHandle', '==', req.user.handle)
@@ -163,10 +163,10 @@ exports.likeScream = (req, res) => {
       console.error(err);
       return res.status(500).json({ error: err.code });
     });
-};
+}
 
 //Unlike a scream
-exports.unlikeScream = (req, res) => {
+export function unlikeScream(req, res) {
   const likeDocument = db
     .collection('likes')
     .where('userHandle', '==', req.user.handle)
@@ -208,10 +208,10 @@ exports.unlikeScream = (req, res) => {
       console.error(err);
       return res.status(500).json({ error: err.code });
     });
-};
+}
 
 //Delete a scream
-exports.deleteScream = (req, res) => {
+export function deleteScream(req, res) {
   const document = db.doc(`/screams/${req.params.screamId}`);
   document
     .get()
@@ -230,4 +230,4 @@ exports.deleteScream = (req, res) => {
       console.error(err);
       return res.status(500).json({ error: err.code });
     });
-};
+}

@@ -1,33 +1,18 @@
-const functions = require('firebase-functions');
+import { https, firestore } from 'firebase-functions';
 
-const app = require('express')();
+import express from 'express';
+const app = express();
 
-const cors = require('cors');
+import cors from 'cors';
 app.use(cors());
 
-const { db } = require('./util/admin');
+import { db } from './util/admin.js';
 
-const {
-  getAllScreams,
-  postOneScream,
-  getScream,
-  commentOnScream,
-  likeScream,
-  unlikeScream,
-  deleteScream,
-} = require('./handlers/screams');
+import { getAllScreams, postOneScream, getScream, commentOnScream, likeScream, unlikeScream, deleteScream } from './handlers/screams.js';
 
-const {
-  signup,
-  login,
-  uploadImage,
-  addUserDetails,
-  getAuthenticatedUser,
-  getUserDetails,
-  markNotificationsRead,
-} = require('./handlers/users');
+import { signup, login, uploadImage, addUserDetails, getAuthenticatedUser, getUserDetails, markNotificationsRead } from './handlers/users.js';
 
-const FBAuth = require('./util/fbauth');
+import FBAuth from './util/fbauth.js';
 
 //Screams routes
 app.get('/screams', getAllScreams);
@@ -47,12 +32,9 @@ app.get('/user', FBAuth, getAuthenticatedUser);
 app.get('/user/:handle', getUserDetails);
 app.post('/notifications', FBAuth, markNotificationsRead);
 
-//Append the name 'api'
-exports.api = functions.https.onRequest(app);
+export const api = https.onRequest(app);
 
-//Triggers
-
-exports.createNotificationOnLike = functions.firestore
+export const createNotificationOnLike = firestore
   .document('likes/{id}')
   .onCreate((snapshot) => {
     return db
@@ -75,7 +57,7 @@ exports.createNotificationOnLike = functions.firestore
       });
   });
 
-exports.deleteNotificationOnUnlike = functions.firestore
+export const deleteNotificationOnUnlike = firestore
   .document('likes/{id}')
   .onDelete((snapshot) => {
     return db
@@ -86,7 +68,7 @@ exports.deleteNotificationOnUnlike = functions.firestore
       });
   });
 
-exports.createNotificationOnComment = functions.firestore
+export const createNotificationOnComment = firestore
   .document('comments/{id}')
   .onCreate((snapshot) => {
     return db
@@ -109,7 +91,7 @@ exports.createNotificationOnComment = functions.firestore
       });
   });
 
-exports.onUserImageChange = functions.firestore
+export const onUserImageChange = firestore
   .document('/users/{userId}')
   .onUpdate((change) => {
     console.log(change.before.data());
@@ -136,7 +118,7 @@ exports.onUserImageChange = functions.firestore
     } else return true;
   });
 
-exports.onScreamDelete = functions.firestore
+export const onScreamDelete = firestore
   .document('/screams/{screamId}')
   .onDelete((snapshot, context) => {
     const screamId = context.params.screamId;

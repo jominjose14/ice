@@ -1,14 +1,17 @@
-const { admin, db } = require('../util/admin');
+import { admin, db } from '../util/admin.js';
 
-const config = require('../util/config');
+import * as config from '../util/config.js';
+const { storageBucket } = config;
 
-const firebase = require('firebase');
-firebase.initializeApp(config);
+import { initializeApp } from 'firebase/app';
+initializeApp(config);
 
-const { validateSignupData, validateLoginData, reduceUserDetails } = require('../util/validators');
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
+
+import { validateSignupData, validateLoginData, reduceUserDetails } from '../util/validators.js';
 
 //Sign user up
-exports.signup = (req, res) => {
+export function signup(req, res) {
     const newUser = {
         email: req.body.email,
         password: req.body.password,
@@ -29,7 +32,7 @@ exports.signup = (req, res) => {
         if(doc.exists) {
             return res.status(400).json({ handle: "This handle is already taken" });
         } else {
-            return firebase.auth().createUserWithEmailAndPassword(newUser.email, newUser.password);
+            return createUserWithEmailAndPassword(getAuth(), newUser.email, newUser.password);
         }
     })
     .then(data => {
@@ -42,7 +45,7 @@ exports.signup = (req, res) => {
             handle: newUser.handle,
             email: newUser.email,
             createdAt: new Date().toISOString(),
-            imageUrl: `https://firebasestorage.googleapis.com/v0/b/${config.storageBucket}/o/${noImg}?alt=media`,
+            imageUrl: `https://firebasestorage.googleapis.com/v0/b/${storageBucket}/o/${noImg}?alt=media`,
             userId
         };
 
@@ -58,10 +61,10 @@ exports.signup = (req, res) => {
         }
         return res.status(500).json({ general: 'Something went wrong, please try again' });
     });
-};
+}
 
 //Log a user in
-exports.login = (req, res) => {
+export function login(req, res) {
     const user = {
         email: req.body.email,
         password: req.body.password
@@ -72,7 +75,7 @@ exports.login = (req, res) => {
     if(!valid) return res.status(400).json(errors);
 
     //Authenticate user
-    firebase.auth().signInWithEmailAndPassword(user.email, user.password)
+    signInWithEmailAndPassword(getAuth(), user.email, user.password)
     .then(data => {
         return data.user.getIdToken();
     })
@@ -85,10 +88,10 @@ exports.login = (req, res) => {
         //auth/user-not-found
         return res.status(403).json({ general: 'Wrong credentials, please try again'});
     });
-};
+}
 
 //Add user details
-exports.addUserDetails = (req, res) => {
+export function addUserDetails(req, res) {
     let userDetails = reduceUserDetails(req.body);
 
     db.doc(`/users/${req.user.handle}`).update(userDetails)
@@ -99,10 +102,10 @@ exports.addUserDetails = (req, res) => {
         console.log(err);
         return res.status(500).json({ error: err.code });
     });
-};
+}
 
 //Get any user's details
-exports.getUserDetails = (req, res) => {
+export function getUserDetails(req, res) {
     const userData = {};
     db.doc(`/users/${req.params.handle}`).get()
     .then(doc => {
@@ -133,10 +136,10 @@ exports.getUserDetails = (req, res) => {
         console.error(err);
         return res.status(500).json({ error: err.code });
     });
-};
+}
 
 //Get own user details
-exports.getAuthenticatedUser = (req, res) => {
+export function getAuthenticatedUser(req, res) {
     let userData = {};
     db.doc(`/users/${req.user.handle}`).get()
     .then(doc => {
@@ -173,10 +176,10 @@ exports.getAuthenticatedUser = (req, res) => {
         console.error(err);
         return res.status(500).json({ error: err.code });
     });
-};
+}
 
 //Upload a profile image for a user
-exports.uploadImage = (req, res) => {
+export function uploadImage(req, res) {
     const BusBoy = require('busboy');
     const path = require('path');
     const os = require('os');
@@ -200,7 +203,7 @@ exports.uploadImage = (req, res) => {
     });
 
     busboy.on('finish', () => {
-        admin.storage().bucket().upload(imageToBeUploaded.filepath, {
+        admin.getStorage().bucket().upload(imageToBeUploaded.filepath, {
             resumable: false,
             metadata: {
                 metadata: {
@@ -209,7 +212,7 @@ exports.uploadImage = (req, res) => {
             }
         })
         .then(() => {
-            const imageUrl = `https://firebasestorage.googleapis.com/v0/b/${config.storageBucket}/o/${imageFileName}?alt=media`;
+            const imageUrl = `https://firebasestorage.googleapis.com/v0/b/${storageBucket}/o/${imageFileName}?alt=media`;
             return db.doc(`/users/${req.user.handle}`).update({ imageUrl });
         })
         .then(() => {
@@ -222,9 +225,9 @@ exports.uploadImage = (req, res) => {
     });
 
     busboy.end(req.rawBody);
-};
+}
 
-exports.markNotificationsRead = (req, res) => {
+export function markNotificationsRead(req, res) {
     let batch = db.batch();
     req.body.forEach(notificationId => {
         const notification = db.doc(`/notifications/${notificationId}`);
@@ -238,4 +241,4 @@ exports.markNotificationsRead = (req, res) => {
         console.error(err);
         return res.status(500).json({ error: err.code });
     });
-};
+}

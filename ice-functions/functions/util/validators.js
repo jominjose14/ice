@@ -13,7 +13,7 @@ const isEmpty = (string) => {
         return false;
 };
 
-exports.validateSignupData = data => {
+export const validateSignupData = data => {
     let errors = {};
 
     if(isEmpty(data.email)) {
@@ -37,7 +37,7 @@ exports.validateSignupData = data => {
     }
 }
 
-exports.validateLoginData = data => {
+export const validateLoginData = data => {
     let errors = {};
 
     if(isEmpty(data.email))
@@ -52,7 +52,7 @@ exports.validateLoginData = data => {
     }
 }
 
-exports.reduceUserDetails = data => {
+export const reduceUserDetails = data => {
     let userDetails = {};
 
     if(!isEmpty(data.bio.trim()))
