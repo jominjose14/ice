@@ -99,6 +99,12 @@ hr {
   }
 
   .child2 {
-    margin-inline: 10vw;
+    margin-inline: 2.5vw;
+  }
+}
+
+@media only screen and (769px <= width <= 10000px) {
+  .logoImage {
+    height: 3.25vh;
   }
 }
