@@ -24,35 +24,37 @@ class Navbar extends Component {
             <Logo className="child1" />
 
             {authenticated ? (
-              <div className="child2">
-                <PostScream />
-                <Link to="/">
+              <div className="child2" >
+                <div style={{ display: "grid", placeItems: "centre", aspectRatio: "1/1" }}>
+                  <PostScream />
+                </div>
+                <Link to="/" style={{ display: "grid", placeItems: "centre", aspectRatio: "1/1" }}>
                   <MyButton tip="Home">
-                    <HomeIcon style={{ marginTop: "7px" }} />
+                    <HomeIcon />
                   </MyButton>
                 </Link>
-                <Notifications />
+                <div style={{ display: "grid", placeItems: "centre", aspectRatio: "1/1" }}>
+                  <Notifications />
+                </div>
               </div>
             ) : (
               <div className="child2">
-                <Button color="inherit" component={Link} to="/login">
-                  {"\u00A0"}
-                  {"\u00A0"}
-                  {"\u00A0"}
-                  {"\u00A0"}
-                  {"\u00A0"}
-                  {"\u00A0"}
+                <Button 
+                color="inherit" 
+                component={Link} 
+                to="/login" 
+                style={{ paddingInline: "2ch", marginLeft: "5ch" }}>
                   Login
                 </Button>
 
-                <Link to="/">
+                <Link to="/" style={{ display: "grid", placeItems: "centre", aspectRatio: "1/1" }}>
                   <MyButton tip="Home">
-                    <HomeIcon style={{ marginTop: "7px" }} />
+                    <HomeIcon />
                   </MyButton>
                 </Link>
 
                 <Button
-                  style={{ whiteSpace: "nowrap" }}
+                  style={{ whiteSpace: "nowrap", paddingInline: "2ch" }}
                   color="inherit"
                   component={Link}
                   to="/signup"

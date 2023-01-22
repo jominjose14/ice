@@ -4,12 +4,12 @@ import AppIcon from "../../images/icon.svg";
 class Logo extends Component {
   render() {
     return (
-      <Fragment>
-        <img src={AppIcon} alt="Logo" className="logoImage" />
-        {"\u00A0"}
-        {"\u00A0"}
+      <div className="logoContainer">
+        <div className="logoImageContainer">
+          <img src={AppIcon} alt="Logo" className="logoImage" />
+        </div>
         <div className="logoText">Ice</div>
-      </Fragment>
+      </div>
     );
   }
 }

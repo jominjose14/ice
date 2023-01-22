@@ -55,7 +55,7 @@ class Profile extends Component {
 
     let profileMarkup = !loading ? (
       authenticated ? (
-        <Paper className={classes.paper}>
+        <Paper className={classes.paper} style={{ position: 'sticky', top: (document.querySelector('.nav').clientHeight + 16) }}>
           <div className={classes.profile}>
             <Typography
               variant="h5"
@@ -135,7 +135,7 @@ class Profile extends Component {
           </div>
         </Paper>
       ) : (
-        <Paper className={classes.paper}>
+        <Paper className={classes.paper} style={{ position: 'sticky', top: '11.5vh' }}>
           <Typography variant="body2" align="center">
             No profile found, please Login again
           </Typography>

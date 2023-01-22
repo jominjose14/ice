@@ -62,6 +62,7 @@ export default {
       objectFit: 'cover',
       maxWidth: '100%',
       borderRadius: '50%',
+      aspectRatio: '1/1'
     },
     '& profile-details': {
       textAlign: 'center',
