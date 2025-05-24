@@ -81,12 +81,8 @@ hr {
   border-radius: 5px;
 }
 
-::-webkit-scrollbar {
-  width: 1px;
-}
-
-::-webkit-scrollbar-thumb {
-  background: rgba(0, 0, 0, 0);
+* {
+  scrollbar-width: thin;
 }
 
 @media only screen and (100px <= width <= 768px) {
